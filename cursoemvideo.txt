@@ -1,0 +1,5 @@
+Lucas;35
+Priscilla;33
+Aurora;3
+Olívia;1
+Joey;3
