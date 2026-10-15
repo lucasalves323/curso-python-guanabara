@@ -30,6 +30,7 @@ class Monstro(ABC):
         if self.protegido:
             self.protegido = False
             print(f'{self.nome} ignorou o ataque.')
+            return False
         else:
             self.vida -= dano
             if self.vida <= 0:
@@ -37,6 +38,7 @@ class Monstro(ABC):
                 print(f'{self.nome} foi derrotado!')
             else:
                 print(f'Após o ataque, {self.nome} ficou com {self.vida} de vida.')
+            return True
 
     def usar_habilidade(self, alvo = None):
         if self.vida > 0:
@@ -68,9 +70,12 @@ class Goblin(Monstro):
 
     def habilidade_especial(self, alvo):
         roubo = random.randint(1, 50)
-        self.vida += roubo
-        print(f'{self.nome} roubou vida de {alvo.nome} e se curou em {roubo} pontos de vida.')
-        alvo.receber_dano(roubo)
+        print(f'{self.nome} tenta roubar vida de {alvo.nome}.')
+        if alvo.receber_dano(roubo):
+            self.vida += roubo
+            print(f'{self.nome} roubou vida de {alvo.nome} e se curou em {roubo} pontos de vida.')
+        else:
+            print(f'{self.nome} não conseguiu roubar nada.')
     
     
 
@@ -90,16 +95,16 @@ p3 = Esqueleto('Skeleton', 300)
 
 for rodada in range(1, 4):
     print(f'--- Rodada {rodada} ---')
-    p1.atacar(p3)
+    p2.atacar(p3)
     print()
-    p3.atacar(p1)
+    p3.atacar(p2)
     
     if rodada % 2 == 0:
         print()
         print(f'>> Habilidades Especiais <<')
 
-        p1.usar_habilidade(p3)
-        p3.usar_habilidade(p1)
+        p3.usar_habilidade(p2)
+        p2.usar_habilidade(p3)
     print()
 
 print(f'Fim da batalha: {p1.nome} com {p1.vida} de vida, e {p3.nome} com {p3.vida} de vida.')
